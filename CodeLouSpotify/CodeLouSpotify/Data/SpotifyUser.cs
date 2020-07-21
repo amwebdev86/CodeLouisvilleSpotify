@@ -20,7 +20,7 @@ namespace CodeLouSpotify.Models
         public SpotifyUser()
         {
             Env.Load(@"C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\.env");
-            ClientId = "9f6e8509f8b34c5bb57f93f3561e705a";
+            ClientId = Env.GetString("CLIENT_ID");
             ClientSecret = Env.GetString("CLIENT_SECRET");
         }
 
