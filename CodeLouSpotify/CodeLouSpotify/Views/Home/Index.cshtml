@@ -3,12 +3,17 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4 text-success">Spotify DB</h1>
-    @Html.ActionLink("Get Authenticated!", "AuthorizeUser")
-</div>
+    <div class="text-center">
+        <h1 class="display-4 text-success">Spotify DB</h1>
+        @if (Model.AccessToken == null)
+        {
+            @Html.ActionLink("Get Authenticated!", "AuthorizeUser")
 
-    @if(Model.AccessToken != null)
-    {
-        <a>Profile</a>
-    }
+        }
+        @if (Model.AccessToken != null)
+        {
+            <a>Profile</a>
+        }
+    </div>
+
+
