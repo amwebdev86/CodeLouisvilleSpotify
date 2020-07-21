@@ -1,0 +1,9 @@
+﻿@model CodeLouSpotify.Models.SpotifyToken
+@{
+    ViewData["Title"] = "Callback";
+}
+
+<h1 class="text-success">Spotify DB Access Granted!</h1>
+<p>Access type: @Model.TokenType</p>
+<p>Granted Scopes: @Model.Scope</p>
+
