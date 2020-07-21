@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "DotNetEnv/1.4.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/DotNetEnv.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/DotNetEnv.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Cryptography.Internal/3.1.5": {
         "type": "package",
         "compile": {
@@ -2649,6 +2661,19 @@
     }
   },
   "libraries": {
+    "DotNetEnv/1.4.0": {
+      "sha512": "ye3WhbO/bHrgl6C6aE8VKKDewdRxEv1tSSnNMbYE1TxROegwkd1KXo/JjpBcC6nR/FbTpSBPZ2RzjxIimgVlSA==",
+      "type": "package",
+      "path": "dotnetenv/1.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "dotnetenv.1.4.0.nupkg.sha512",
+        "dotnetenv.nuspec",
+        "lib/netstandard1.3/DotNetEnv.dll"
+      ]
+    },
     "Microsoft.AspNetCore.Cryptography.Internal/3.1.5": {
       "sha512": "oLOay0PH+b0x9mTAFAZswlDuoZYOO2Is6eeDoN8pzx31zzpNL2RvEY343s8yaTVEzydymRduTyff4htRJgt6IA==",
       "type": "package",
@@ -8601,6 +8626,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "DotNetEnv >= 1.4.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 3.1.5",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 3.1.5",
       "Microsoft.AspNetCore.Identity.UI >= 3.1.5",
@@ -8646,6 +8672,10 @@
     "frameworks": {
       "netcoreapp3.1": {
         "dependencies": {
+          "DotNetEnv": {
+            "target": "Package",
+            "version": "[1.4.0, )"
+          },
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
             "target": "Package",
             "version": "[3.1.5, )"

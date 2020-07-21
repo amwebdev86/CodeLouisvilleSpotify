@@ -9,12 +9,14 @@ using CodeLouSpotify.Models;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace CodeLouSpotify.Controllers
 {
     public class HomeController : Controller
     {
         SpotifyUser user = new SpotifyUser();
+        SpotifyToken token = new SpotifyToken();
 
         private readonly ILogger<HomeController> _logger;
 
@@ -70,11 +72,21 @@ namespace CodeLouSpotify.Controllers
                             new KeyValuePair<string, string>("grant_type", "authorization_code")
                         });
                 var response = client.PostAsync("https://accounts.spotify.com/api/token", formContent).Result;
-                var responseContent = response.Content;
-                responseString = responseContent.ReadAsStringAsync().Result;
+                if(response.IsSuccessStatusCode)
+                {
+                    var responseContent = response.Content;
+                    responseString = responseContent.ReadAsStringAsync().Result;
+                    token = JsonConvert.DeserializeObject<SpotifyToken>(responseString);
 
+                }
+                else
+                {
+                    ViewBag.NotAbleToSignIn = "User not logged in...";
+                }
+               
+                
             }
-            return View();
+            return View(token);
         }
     }
 }

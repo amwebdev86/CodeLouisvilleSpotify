@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿using DotNetEnv;
+using Microsoft.AspNetCore.Http.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,9 @@ namespace CodeLouSpotify.Models
         }
         public SpotifyUser()
         {
+            Env.Load(@"C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\.env");
             ClientId = "9f6e8509f8b34c5bb57f93f3561e705a";
-            ClientSecret = "fee3b46e6ef944a494bd49e43b60420d";
+            ClientSecret = Env.GetString("CLIENT_SECRET");
         }
 
         public string Authorize()
