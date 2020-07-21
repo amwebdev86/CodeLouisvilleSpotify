@@ -24,13 +24,13 @@ namespace CodeLouSpotify.Controllers
         {
             _logger = logger;
         }
-      
 
-        public IActionResult Index()
-        {
-            
-            return View();
-        }
+
+        //public IActionResult Index()
+        //{
+
+        //    return View();
+        //}
         //TODO: Refresh Token method 
         public IActionResult GetRefreshToken(SpotifyToken token)
         {
@@ -66,24 +66,23 @@ namespace CodeLouSpotify.Controllers
                 return View("Index", token);
             }
         }
-        [HttpGet]
         public IActionResult Index(SpotifyToken token)
         {
-            if(token.Expiration <= 0)
+            if (token.Expiration <= 0)
             {
                 //RefreshTokenMethodCall
                 Debug.Write("Called Refresh...");
-                    GetRefreshToken(token);
-                    return View(token);
+                GetRefreshToken(token);
+                return View(token);
             }
-           
+
             return View(token);
         }
         public IActionResult AuthorizeUser()
         {
             return Redirect(user.Authorize());
         }
-     
+
         public IActionResult Privacy()
         {
             return View();
@@ -95,7 +94,7 @@ namespace CodeLouSpotify.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         /// <summary>
-        /// 
+        /// Returns user to /callback after being authenticated.
         /// </summary>
         /// <param name="code">code returned from spotify</param>
         /// <returns></returns>
@@ -104,13 +103,13 @@ namespace CodeLouSpotify.Controllers
         {
             string responseString = string.Empty;
 
-            if(code == null)
+            if (code == null)
             {
                 return NotFound();
             }
-            using(HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                     Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(user.ClientId + ":" + user.ClientSecret)));
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(
                         new[]
@@ -120,7 +119,7 @@ namespace CodeLouSpotify.Controllers
                             new KeyValuePair<string, string>("grant_type", "authorization_code")
                         });
                 var response = client.PostAsync("https://accounts.spotify.com/api/token", formContent).Result;
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     var responseContent = response.Content;
                     responseString = responseContent.ReadAsStringAsync().Result;
@@ -131,10 +130,11 @@ namespace CodeLouSpotify.Controllers
                 {
                     ViewBag.NotAbleToSignIn = "User not logged in...";
                 }
-               
-                
+
+
             }
-            return View(token);
+            
+            return View("Index",token);
         }
     }
 }
