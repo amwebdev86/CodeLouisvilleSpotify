@@ -31,6 +31,54 @@ namespace CodeLouSpotify.Controllers
             
             return View();
         }
+        //TODO: Refresh Token method 
+        public IActionResult GetRefreshToken(SpotifyToken token)
+        {
+            var responseString = string.Empty;
+
+            //code
+            if (token == null)
+            {
+                return Redirect(user.Authorize());
+            }
+            using (HttpClient refreshClient = new HttpClient())
+            {
+                refreshClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                    Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(user.ClientId + ":" + user.ClientSecret)));
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(
+                    new[]
+                        {
+                            new KeyValuePair<string,string>("grant_type","refresh_token"),
+                            new KeyValuePair<string, string>("refresh_token", token.RefreshToken)
+                        }
+
+                    );
+                var response = refreshClient.PostAsync("https://accounts.spotify.com/api/token", formContent).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = response.Content;
+                    responseString = responseContent.ReadAsStringAsync().Result;
+                    var newToken = JsonConvert.DeserializeObject<SpotifyToken>(responseString);
+                    token.AccessToken = newToken.AccessToken;
+                    token.TokenType = newToken.TokenType;
+                    token.Expiration = newToken.Expiration;
+                }
+                return View("Index", token);
+            }
+        }
+        [HttpGet]
+        public IActionResult Index(SpotifyToken token)
+        {
+            if(token.Expiration <= 0)
+            {
+                //RefreshTokenMethodCall
+                Debug.Write("Called Refresh...");
+                    GetRefreshToken(token);
+                    return View(token);
+            }
+           
+            return View(token);
+        }
         public IActionResult AuthorizeUser()
         {
             return Redirect(user.Authorize());
