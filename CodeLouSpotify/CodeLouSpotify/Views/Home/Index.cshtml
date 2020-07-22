@@ -10,10 +10,12 @@
             @Html.ActionLink("Get Authenticated!", "AuthorizeUser")
 
         }
-        @if (Model.AccessToken != null)
+        else
         {
-            <a>Profile</a>
+            <p>You are currently logged in...</p>
+            @Html.ActionLink("View Profile","Profile" )
         }
+
     </div>
 
 

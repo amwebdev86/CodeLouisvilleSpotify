@@ -15,8 +15,9 @@ namespace CodeLouSpotify.Controllers
 {
     public class HomeController : Controller
     {
-        SpotifyUser user = new SpotifyUser();
-        SpotifyToken token = new SpotifyToken();
+        SpotifyUser _user = new SpotifyUser();
+        SpotifyToken _token;
+        Profile userProfile = new Profile();
 
         private readonly ILogger<HomeController> _logger;
 
@@ -25,13 +26,13 @@ namespace CodeLouSpotify.Controllers
             _logger = logger;
         }
 
-
+        
         //public IActionResult Index()
         //{
 
         //    return View();
         //}
-        //TODO: Refresh Token method 
+        
         public IActionResult GetRefreshToken(SpotifyToken token)
         {
             var responseString = string.Empty;
@@ -39,12 +40,12 @@ namespace CodeLouSpotify.Controllers
             //code
             if (token == null)
             {
-                return Redirect(user.Authorize());
+                return Redirect(_user.Authorize());
             }
             using (HttpClient refreshClient = new HttpClient())
             {
                 refreshClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                    Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(user.ClientId + ":" + user.ClientSecret)));
+                    Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(_user.ClientId + ":" + _user.ClientSecret)));
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(
                     new[]
                         {
@@ -66,21 +67,21 @@ namespace CodeLouSpotify.Controllers
                 return View("Index", token);
             }
         }
-        public IActionResult Index(SpotifyToken token)
+        
+        public IActionResult Index(SpotifyToken usertoken)
         {
-            if (token.Expiration <= 0)
+          
+           if(usertoken.Expiration <= 0)
             {
-                //RefreshTokenMethodCall
-                Debug.Write("Called Refresh...");
-                GetRefreshToken(token);
-                return View(token);
+                GetRefreshToken(usertoken);
             }
-
-            return View(token);
+         
+            return View(usertoken);
         }
+
         public IActionResult AuthorizeUser()
         {
-            return Redirect(user.Authorize());
+            return Redirect(_user.Authorize());
         }
 
         public IActionResult Privacy()
@@ -94,7 +95,7 @@ namespace CodeLouSpotify.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         /// <summary>
-        /// Returns user to /callback after being authenticated.
+        /// Takes code recieved from spotify and request a token redirecting the user to the home page if successful. 
         /// </summary>
         /// <param name="code">code returned from spotify</param>
         /// <returns></returns>
@@ -110,12 +111,12 @@ namespace CodeLouSpotify.Controllers
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                    Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(user.ClientId + ":" + user.ClientSecret)));
+                Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(_user.ClientId + ":" + _user.ClientSecret)));
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(
                         new[]
                         {
                             new KeyValuePair<string,string>("code", code),
-                            new KeyValuePair<string,string>("redirect_uri", user.CallbackUri),
+                            new KeyValuePair<string,string>("redirect_uri", _user.CallbackUri),
                             new KeyValuePair<string, string>("grant_type", "authorization_code")
                         });
                 var response = client.PostAsync("https://accounts.spotify.com/api/token", formContent).Result;
@@ -123,18 +124,52 @@ namespace CodeLouSpotify.Controllers
                 {
                     var responseContent = response.Content;
                     responseString = responseContent.ReadAsStringAsync().Result;
-                    token = JsonConvert.DeserializeObject<SpotifyToken>(responseString);
-
+                    _token = JsonConvert.DeserializeObject<SpotifyToken>(responseString);
                 }
                 else
                 {
                     ViewBag.NotAbleToSignIn = "User not logged in...";
+                    return View();
                 }
 
 
             }
             
-            return View("Index",token);
+            return RedirectToAction("Index", _token);
+        }
+
+        [HttpGet]//not sure if I need this
+        public async Task<IActionResult> Profile(SpotifyToken userToken)
+        {
+           //TODO: Fix Profile ActionMethod
+           if(userToken.AccessToken== null)
+            {
+                return RedirectToAction("Callback");
+            }
+           
+            using(HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",userToken.AccessToken);
+                var task = await client.GetAsync("https://api.spotify.com/v1/me");
+              
+                    
+                    if (task.IsSuccessStatusCode)
+                    {
+                        var jsonString =await task.Content.ReadAsStringAsync();
+                        userProfile = JsonConvert.DeserializeObject<Profile>(jsonString);
+                    }
+                    else
+                    {
+                    ViewBag.NotSuccessful = task.StatusCode.ToString();
+                        return View(userProfile);
+                    }
+                
+            }
+
+
+            return View(userProfile);
         }
     }
 }
