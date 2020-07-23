@@ -13,7 +13,7 @@
         else
         {
             <p>You are currently logged in...</p>
-            @Html.ActionLink("View Profile","Profile" )
+            @Html.ActionLink("View Profile","Profile",new  SpotifyToken {AccessToken = Model.AccessToken, RefreshToken = Model.RefreshToken, Expiration = Model.Expiration } )
         }
 
     </div>

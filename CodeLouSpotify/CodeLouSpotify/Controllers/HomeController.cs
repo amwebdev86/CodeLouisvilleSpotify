@@ -16,7 +16,7 @@ namespace CodeLouSpotify.Controllers
     public class HomeController : Controller
     {
         SpotifyUser _user = new SpotifyUser();
-        SpotifyToken _token;
+        SpotifyToken _token = new SpotifyToken();
         Profile userProfile = new Profile();
 
         private readonly ILogger<HomeController> _logger;
@@ -26,13 +26,23 @@ namespace CodeLouSpotify.Controllers
             _logger = logger;
         }
 
-        
-        //public IActionResult Index()
-        //{
 
-        //    return View();
-        //}
-        
+        public IActionResult Home(SpotifyToken userToken)
+        {
+            if (userToken.Expiration <= 0)
+            {
+                GetRefreshToken(userToken);
+            }
+
+            return View();
+        }
+
+        /// <summary>
+        /// Refreshes user token.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+
         public IActionResult GetRefreshToken(SpotifyToken token)
         {
             var responseString = string.Empty;
@@ -67,18 +77,18 @@ namespace CodeLouSpotify.Controllers
                 return View("Index", token);
             }
         }
-        
+
         public IActionResult Index(SpotifyToken usertoken)
         {
-          
-           if(usertoken.Expiration <= 0)
+
+            if (usertoken.Expiration <= 0)
             {
                 GetRefreshToken(usertoken);
             }
-         
+
             return View(usertoken);
         }
-
+        //TODO: [Update, Convience] Pass ClientID and Seceret as a Query Param from input for Code Lou to login without needing email.
         public IActionResult AuthorizeUser()
         {
             return Redirect(_user.Authorize());
@@ -95,19 +105,31 @@ namespace CodeLouSpotify.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         /// <summary>
-        /// Takes code recieved from spotify and request a token redirecting the user to the home page if successful. 
+        /// Returns IActionResult Redirecting user to the Index page with the Code recieved from spotify.
         /// </summary>
-        /// <param name="code">code returned from spotify</param>
+        /// <param name="code"></param>
         /// <returns></returns>
+       
         [Route("/callback")]
         public IActionResult Callback(string code)
         {
+            _token = GetSpotifyToken(code);
+            ViewBag.NotAbleToSignIn = "User not logged in...";
+
+            
+            return RedirectToAction("Index", _token);
+        }
+
+        /// <summary>
+        /// Takes code recieved from spotify and requests a Token
+        /// </summary>
+        /// <param name="code">code returned from spotify</param>
+        /// <returns>SpotifyToken</returns>
+        public SpotifyToken GetSpotifyToken(string code)
+        {//TODO: [Update, Want] store Token in Runtime cache for access and refreshing. 
+            SpotifyToken newToken = new SpotifyToken();
             string responseString = string.Empty;
 
-            if (code == null)
-            {
-                return NotFound();
-            }
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
@@ -124,48 +146,39 @@ namespace CodeLouSpotify.Controllers
                 {
                     var responseContent = response.Content;
                     responseString = responseContent.ReadAsStringAsync().Result;
-                    _token = JsonConvert.DeserializeObject<SpotifyToken>(responseString);
+                    newToken = JsonConvert.DeserializeObject<SpotifyToken>(responseString);
                 }
-                else
-                {
-                    ViewBag.NotAbleToSignIn = "User not logged in...";
-                    return View();
-                }
-
-
             }
-            
-            return RedirectToAction("Index", _token);
+            return newToken;
         }
 
-        [HttpGet]//not sure if I need this
-        public async Task<IActionResult> Profile(SpotifyToken userToken)
+        [HttpGet]//not sure if I need this aatribute
+        public async Task<IActionResult> Profile([FromQuery]SpotifyToken userToken)
         {
-           //TODO: Fix Profile ActionMethod
-           if(userToken.AccessToken== null)
+            if (string.IsNullOrEmpty(userToken.AccessToken))
             {
-                return RedirectToAction("Callback");
+                return RedirectToAction("Index");
             }
-           
-            using(HttpClient client = new HttpClient())
+
+            using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",userToken.AccessToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken.AccessToken);
                 var task = await client.GetAsync("https://api.spotify.com/v1/me");
-              
-                    
-                    if (task.IsSuccessStatusCode)
-                    {
-                        var jsonString =await task.Content.ReadAsStringAsync();
-                        userProfile = JsonConvert.DeserializeObject<Profile>(jsonString);
-                    }
-                    else
-                    {
+
+
+                if (task.IsSuccessStatusCode)
+                {
+                    var jsonString = await task.Content.ReadAsStringAsync();
+                    userProfile = JsonConvert.DeserializeObject<Profile>(jsonString);
+                }
+                else
+                {
                     ViewBag.NotSuccessful = task.StatusCode.ToString();
-                        return View(userProfile);
-                    }
-                
+                    return View(userProfile);
+                }
+
             }
 
 
