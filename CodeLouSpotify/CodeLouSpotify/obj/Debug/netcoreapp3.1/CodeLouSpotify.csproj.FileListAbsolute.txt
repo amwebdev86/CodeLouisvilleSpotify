@@ -249,3 +249,4 @@ C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\Code
 C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\obj\Debug\netcoreapp3.1\CodeLouSpotify.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\obj\Debug\netcoreapp3.1\CodeLouSpotify.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\obj\Debug\netcoreapp3.1\Razor\Views\Home\Profile.cshtml.g.cs
+C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\obj\Debug\netcoreapp3.1\Razor\Views\Home\Home.cshtml.g.cs

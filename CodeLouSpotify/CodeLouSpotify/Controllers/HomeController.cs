@@ -26,7 +26,7 @@ namespace CodeLouSpotify.Controllers
             _logger = logger;
         }
 
-
+        //TODO: HOME PAGE AFTER LOGGIN
         public IActionResult Home(SpotifyToken userToken)
         {
             if (userToken.Expiration <= 0)
@@ -36,6 +36,8 @@ namespace CodeLouSpotify.Controllers
 
             return View();
         }
+
+
 
         /// <summary>
         /// Refreshes user token.
