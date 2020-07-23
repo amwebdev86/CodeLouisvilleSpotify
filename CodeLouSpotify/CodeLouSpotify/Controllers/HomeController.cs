@@ -36,7 +36,30 @@ namespace CodeLouSpotify.Controllers
 
             return View();
         }
+        [HttpGet]
+        public IActionResult Search([FromQuery]SpotifyToken spotifyToken)
+        {
 
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Search()
+        {
+           var title = Request.Form["title"][0];
+           var  limit = Request.Form["limit"][0];
+            return RedirectToAction("SearchResult", new
+            {
+                title,
+                limit
+            });
+
+
+        }
+        public IActionResult SearchResult()
+        {
+
+            return View();
+        }
 
 
         /// <summary>
@@ -157,6 +180,7 @@ namespace CodeLouSpotify.Controllers
         [HttpGet]//not sure if I need this aatribute
         public async Task<IActionResult> Profile([FromQuery]SpotifyToken userToken)
         {
+            ViewData["UserToken"] = userToken.AccessToken;
             if (string.IsNullOrEmpty(userToken.AccessToken))
             {
                 return RedirectToAction("Index");
