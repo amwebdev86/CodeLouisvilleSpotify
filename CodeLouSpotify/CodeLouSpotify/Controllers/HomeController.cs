@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CodeLouSpotify.Controllers
 {
@@ -47,19 +48,24 @@ namespace CodeLouSpotify.Controllers
         {
            var title = Request.Form["title"][0];
            var  limit = Request.Form["limit"][0];
+           
             return RedirectToAction("SearchResult", new
             {
                 title,
                 limit
+                
             });
 
 
         }
-        public IActionResult SearchResult()
+        [HttpGet]
+        public IActionResult SearchResult(string title, string limit)
         {
-
+            
             return View();
         }
+
+        
 
 
         /// <summary>
@@ -185,7 +191,7 @@ namespace CodeLouSpotify.Controllers
             {
                 return RedirectToAction("Index");
             }
-
+            //TODO: Put into async Task<Profile> method returning a Profile object.
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Clear();
@@ -210,5 +216,6 @@ namespace CodeLouSpotify.Controllers
 
             return View(userProfile);
         }
+        
     }
 }
