@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CodeLouSpotify.Models
 {
-    public class SpotifyPaging
+    public class SpotifyPaging 
     {
         [JsonProperty(PropertyName ="href")]
         public string Href { get; set; }
 
         [JsonProperty(PropertyName ="items")]
-        public Item[] Items { get; set; }
+        public Item1[] Items { get; set; }
 
         [JsonProperty(PropertyName ="limit")]
         public int Limit { get; set; }
@@ -31,7 +31,7 @@ namespace CodeLouSpotify.Models
 
     }
 
-    public class Item
+    public class Item1
     {
        public List<TrackFull> Tracks { get; set; }
     }

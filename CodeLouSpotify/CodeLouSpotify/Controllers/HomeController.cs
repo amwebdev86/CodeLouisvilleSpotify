@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Policy;
 
 namespace CodeLouSpotify.Controllers
 {
@@ -38,34 +39,58 @@ namespace CodeLouSpotify.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Search([FromQuery]SpotifyToken spotifyToken)
+        public IActionResult Search()
         {
-
             return View();
         }
         [HttpPost]
-        public IActionResult Search()
+        public IActionResult Search([FromQuery] SpotifyToken spotifyToken)
         {
-           var title = Request.Form["title"][0];
-           var  limit = Request.Form["limit"][0];
-           
+           var userToken = spotifyToken.AccessToken;
+            var title = Request.Form["title"][0];
+            var limit = Request.Form["limit"][0];
+
+
             return RedirectToAction("SearchResult", new
             {
                 title,
-                limit
-                
+                limit,
+                userToken
+               
+
             });
-
-
         }
+     
         [HttpGet]
-        public IActionResult SearchResult(string title, string limit)
+        public IActionResult SearchResult(string title, string limit, [FromQuery]string userToken)
         {
-            
-            return View();
+
+            var track = GetSearchResults(title, limit, userToken).Result;
+            return View(track);
         }
 
-        
+        public async Task<Tracks> GetSearchResults(string title, string limit, string userToken)
+        {
+            //TODO: Fix why this returns null object.
+            var result = new Tracks();
+            var formattedTitle = title.Replace(' ', '+');
+            string endpoint = $@"https://api.spotify.com/v1/search?q={formattedTitle}&type=track&market=US&limit={limit}";
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
+                var task = await client.GetAsync(endpoint);
+                if (task.IsSuccessStatusCode)
+                {
+                    var responseMessage = await task.Content.ReadAsStringAsync();
+                    result = JsonConvert.DeserializeObject<TestModel>(responseMessage).tracks;
+
+
+                }
+            }
+            return result;
+        }
 
 
         /// <summary>
@@ -178,12 +203,13 @@ namespace CodeLouSpotify.Controllers
                     var responseContent = response.Content;
                     responseString = responseContent.ReadAsStringAsync().Result;
                     newToken = JsonConvert.DeserializeObject<SpotifyToken>(responseString);
+                    _token = newToken;
                 }
             }
             return newToken;
         }
 
-        [HttpGet]//not sure if I need this aatribute
+        [HttpGet]//not sure if I need this attribute
         public async Task<IActionResult> Profile([FromQuery]SpotifyToken userToken)
         {
             ViewData["UserToken"] = userToken.AccessToken;
