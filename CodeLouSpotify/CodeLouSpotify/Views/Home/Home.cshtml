@@ -1,0 +1,10 @@
+﻿@model CodeLouSpotify.Models.SpotifyToken
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>Home</h1>
+<div>
+    @Html.ActionLink("Search Spotify", "Search", new SpotifyToken { AccessToken = Model.AccessToken, 
+    Expiration = Model.Expiration, RefreshToken = Model.RefreshToken, TokenType= Model.TokenType}) 
+</div>

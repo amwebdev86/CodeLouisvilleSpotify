@@ -1,9 +1,21 @@
-﻿
+﻿@model CodeLouSpotify.Models.SpotifyToken
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4 text-success">Spotify DB</h1>
-    @Html.ActionLink("Get Authenticated!", "AuthorizeUser")
-</div>
+    <div class="text-center">
+        <h1 class="display-4 text-success">Spotify DB</h1>
+        @if (Model.AccessToken == null)
+        {
+            @Html.ActionLink("Get Authenticated!", "AuthorizeUser")
+
+        }
+        else
+        {
+            <p>You are currently logged in...</p>
+            @Html.ActionLink("View Profile","Profile",new  SpotifyToken {AccessToken = Model.AccessToken, RefreshToken = Model.RefreshToken, Expiration = Model.Expiration } )
+        }
+
+    </div>
+
+

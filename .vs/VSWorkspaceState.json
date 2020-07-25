@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\CodeLouSpotify",
+    "\\CodeLouSpotify\\CodeLouSpotify",
+    "\\CodeLouSpotify\\CodeLouSpotify\\Data"
   ],
   "PreviewInSolutionExplorer": false
 }
