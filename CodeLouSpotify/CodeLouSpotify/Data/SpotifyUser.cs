@@ -19,6 +19,7 @@ namespace CodeLouSpotify.Models
         }
         public SpotifyUser()
         {
+            //TODO: Remove reference to env files and hard code values for Code Lou to use.
             Env.Load(@"C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\.env");
             ClientId = Env.GetString("CLIENT_ID");
             ClientSecret = Env.GetString("CLIENT_SECRET");
