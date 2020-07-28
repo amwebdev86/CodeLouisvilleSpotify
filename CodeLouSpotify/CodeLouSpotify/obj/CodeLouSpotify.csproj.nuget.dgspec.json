@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\AMweb\\source\\repos\\amwebdev86\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\CodeLouSpotify.csproj": {}
+    "C:\\Users\\AMweb\\source\\repos\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\CodeLouSpotify.csproj": {}
   },
   "projects": {
-    "C:\\Users\\AMweb\\source\\repos\\amwebdev86\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\CodeLouSpotify.csproj": {
+    "C:\\Users\\AMweb\\source\\repos\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\CodeLouSpotify.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\AMweb\\source\\repos\\amwebdev86\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\CodeLouSpotify.csproj",
+        "projectUniqueName": "C:\\Users\\AMweb\\source\\repos\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\CodeLouSpotify.csproj",
         "projectName": "CodeLouSpotify",
-        "projectPath": "C:\\Users\\AMweb\\source\\repos\\amwebdev86\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\CodeLouSpotify.csproj",
+        "projectPath": "C:\\Users\\AMweb\\source\\repos\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\CodeLouSpotify.csproj",
         "packagesPath": "C:\\Users\\AMweb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\AMweb\\source\\repos\\amwebdev86\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\obj\\",
+        "outputPath": "C:\\Users\\AMweb\\source\\repos\\CodeLouisvilleSpotify\\CodeLouSpotify\\CodeLouSpotify\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\AMweb\\AppData\\Roaming\\NuGet\\NuGet.Config",

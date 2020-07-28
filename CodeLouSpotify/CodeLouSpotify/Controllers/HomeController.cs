@@ -87,7 +87,7 @@ namespace CodeLouSpotify.Controllers
                 if (task.IsSuccessStatusCode)
                 {
                     var responseMessage = await task.Content.ReadAsStringAsync();
-                    result = JsonConvert.DeserializeObject<TestModel>(responseMessage).tracks;
+                    result = JsonConvert.DeserializeObject<SearchResultModel>(responseMessage).tracks;
 
                     //TODO: Add some Linq to present list of results based on more refined searching.
                 }

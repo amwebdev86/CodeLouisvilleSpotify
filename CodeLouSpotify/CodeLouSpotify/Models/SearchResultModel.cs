@@ -8,7 +8,7 @@ namespace CodeLouSpotify.Models
     /// <summary>
     /// Models the Json Returned from Spotify.
     /// </summary>
-    public class TestModel
+    public class SearchResultModel
     {
         public Tracks tracks { get; set; }
     }
