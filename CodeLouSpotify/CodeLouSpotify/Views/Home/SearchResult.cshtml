@@ -4,19 +4,33 @@
 }
 
 <h1>SearchResult</h1>
+<p>Total found: @Model.total</p>
 <div>
-    @{
-        for (var i = 0; i < Model.items.Length; i++)
-        {
-            
-            <h2>@Model.items[i].name</h2>
+    <dl>
+        @{
+            for (var i = 0; i < Model.items.Length; i++)
+            {
+                <dt> @Model.items[i].name</dt>
 
-            <img src="@Model.items[i].album.images[i].url" height="@Model.items[i].album.images[i].height" width="@Model.items[i].album.images[i].width" />
+                for (var j = 0; j < Model.items[i].album.images.Length; j++)
+                {
 
+                    <dd>
+                        <img src="@Model.items[i].album.images[j].url" height="@Model.items[i].album.images[j].height" width="@Model.items[i].album.images[j].width" />
+                        <a href="@Model.items[i].preview_url">Preview</a>
+
+                    </dd>
+
+
+                }
+
+
+
+
+            }
         }
-    }
+    </dl>
 
 </div>
 
-<p>Back to Search</p>
 

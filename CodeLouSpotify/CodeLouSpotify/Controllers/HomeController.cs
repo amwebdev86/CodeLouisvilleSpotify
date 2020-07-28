@@ -46,7 +46,7 @@ namespace CodeLouSpotify.Controllers
         [HttpPost]
         public IActionResult Search([FromQuery] SpotifyToken spotifyToken)
         {
-           var userToken = spotifyToken.AccessToken;
+            var userToken = spotifyToken.AccessToken;
             var title = Request.Form["title"][0];
             var limit = Request.Form["limit"][0];
 
@@ -56,15 +56,18 @@ namespace CodeLouSpotify.Controllers
                 title,
                 limit,
                 userToken
-               
+
 
             });
         }
-     
-        [HttpGet]
-        public IActionResult SearchResult(string title, string limit, [FromQuery]string userToken)
-        {
 
+        [HttpGet]
+        public IActionResult SearchResult(string title, string limit, [FromQuery] string userToken)
+        {
+            if (string.IsNullOrWhiteSpace(limit))
+            {
+                limit = "1";
+            }
             var track = GetSearchResults(title, limit, userToken).Result;
             return View(track);
         }
@@ -86,7 +89,7 @@ namespace CodeLouSpotify.Controllers
                     var responseMessage = await task.Content.ReadAsStringAsync();
                     result = JsonConvert.DeserializeObject<TestModel>(responseMessage).tracks;
 
-
+                    //TODO: Add some Linq to present list of results based on more refined searching.
                 }
             }
             return result;
@@ -165,14 +168,14 @@ namespace CodeLouSpotify.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-       
+
         [Route("/callback")]
         public IActionResult Callback(string code)
         {
             _token = GetSpotifyToken(code);
             ViewBag.NotAbleToSignIn = "User not logged in...";
 
-            
+
             return RedirectToAction("Index", _token);
         }
 
@@ -210,7 +213,7 @@ namespace CodeLouSpotify.Controllers
         }
 
         [HttpGet]//not sure if I need this attribute
-        public async Task<IActionResult> Profile([FromQuery]SpotifyToken userToken)
+        public async Task<IActionResult> Profile([FromQuery] SpotifyToken userToken)
         {
             ViewData["UserToken"] = userToken.AccessToken;
             if (string.IsNullOrEmpty(userToken.AccessToken))
@@ -242,6 +245,6 @@ namespace CodeLouSpotify.Controllers
 
             return View(userProfile);
         }
-        
+
     }
 }

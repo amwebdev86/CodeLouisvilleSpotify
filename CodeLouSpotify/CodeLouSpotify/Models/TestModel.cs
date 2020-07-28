@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace CodeLouSpotify.Models
 {
-
+    /// <summary>
+    /// Models the Json Returned from Spotify.
+    /// </summary>
     public class TestModel
     {
         public Tracks tracks { get; set; }
