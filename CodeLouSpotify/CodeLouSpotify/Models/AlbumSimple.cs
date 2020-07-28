@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeLouSpotify.Models
 {
-    public class AlbumSimple
+    public class AlbumSimple 
     {
         [JsonProperty(PropertyName ="album_group")]
         public string AlbumGroup { get; set; }
