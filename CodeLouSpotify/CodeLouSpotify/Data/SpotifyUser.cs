@@ -32,12 +32,12 @@ namespace CodeLouSpotify.Models
             //ClientId = Env.GetString("CLIENT_ID");
             //ClientSecret = Env.GetString("CLIENT_SECRET");
             ClientId = "9f6e8509f8b34c5bb57f93f3561e705a";
-            ClientSecret = "fee3b46e6ef9443a494bd49e43b60420d";
+            ClientSecret = "fee3b46e6ef944a494bd49e43b60420d";
         }
         /// <summary>
         /// Creates a query using the clientID and clientSecret to sending user to Spotify to Authorize.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Redirection to spotify authorization</returns>
         public string Authorize()
         {
             var qb = new QueryBuilder();

@@ -18,7 +18,8 @@ namespace CodeLouSpotify.Controllers
     public class HomeController : Controller
     {
         SpotifyUser _user = new SpotifyUser();
-        SpotifyToken _token = new SpotifyToken();
+        [BindProperty]
+       public SpotifyToken UserToken { get; set; }
         Profile userProfile = new Profile();
 
         private readonly ILogger<HomeController> _logger;
@@ -29,11 +30,11 @@ namespace CodeLouSpotify.Controllers
         }
 
         //TODO: HOME PAGE AFTER LOGGIN
-        public IActionResult Home(SpotifyToken userToken)
+        public IActionResult Home(SpotifyToken UserToken)
         {
-            if (userToken.Expiration <= 0)
+            if (UserToken.Expiration <= 0)
             {
-                GetRefreshToken(userToken);
+                GetRefreshToken(UserToken);
             }
 
             return View();
@@ -136,18 +137,17 @@ namespace CodeLouSpotify.Controllers
                 return View("Index", token);
             }
         }
-
-        public IActionResult Index(SpotifyToken usertoken)
+        [HttpGet]
+        public IActionResult Index(SpotifyToken UserToken)
         {
-
-            if (usertoken.Expiration <= 0)
-            {
-                GetRefreshToken(usertoken);
-            }
-
-            return View(usertoken);
+           
+            return View(UserToken);
         }
         //TODO: [Update, Convience] Pass ClientID and Seceret as a Query Param from input for Code Lou to login without needing email.
+        /// <summary>
+        /// Gets required Code to exchange for a Token
+        /// </summary>
+        /// <returns>Url with code redirecting to /callback</returns>
         public IActionResult AuthorizeUser()
         {
             return Redirect(_user.Authorize());
@@ -172,11 +172,11 @@ namespace CodeLouSpotify.Controllers
         [Route("/callback")]
         public IActionResult Callback(string code)
         {
-            _token = GetSpotifyToken(code);
+            UserToken = GetSpotifyToken(code);
             ViewBag.NotAbleToSignIn = "User not logged in...";
 
 
-            return RedirectToAction("Index", _token);
+            return RedirectToAction("Index", UserToken);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace CodeLouSpotify.Controllers
                     var responseContent = response.Content;
                     responseString = responseContent.ReadAsStringAsync().Result;
                     newToken = JsonConvert.DeserializeObject<SpotifyToken>(responseString);
-                    _token = newToken;
+                    UserToken = newToken;
                 }
             }
             return newToken;
@@ -244,6 +244,11 @@ namespace CodeLouSpotify.Controllers
 
 
             return View(userProfile);
+        }
+
+        public IActionResult AnalyisTrack(string id)
+        {
+            return View();
         }
 
     }
