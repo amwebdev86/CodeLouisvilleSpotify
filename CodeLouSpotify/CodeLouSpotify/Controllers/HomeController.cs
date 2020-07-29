@@ -19,8 +19,11 @@ namespace CodeLouSpotify.Controllers
     {
         SpotifyUser _user = new SpotifyUser();
         [BindProperty]
-       public SpotifyToken UserToken { get; set; }
+        public SpotifyToken UserToken { get; set; }
+
         Profile userProfile = new Profile();
+        [BindProperty]
+        public AudioAnalysis TrackAudioAnalysis {get;set;}
 
         private readonly ILogger<HomeController> _logger;
 
@@ -138,10 +141,15 @@ namespace CodeLouSpotify.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Index(SpotifyToken UserToken)
+        public IActionResult Index()
         {
-           
-            return View(UserToken);
+            var spotifyToken = new SpotifyToken();
+            if(Request.Cookies.ContainsKey("Spotify"))
+            {
+                spotifyToken.AccessToken = Request.Cookies["Spotify"];
+
+            }
+            return View(spotifyToken);
         }
         //TODO: [Update, Convience] Pass ClientID and Seceret as a Query Param from input for Code Lou to login without needing email.
         /// <summary>
@@ -174,7 +182,7 @@ namespace CodeLouSpotify.Controllers
         {
             UserToken = GetSpotifyToken(code);
             ViewBag.NotAbleToSignIn = "User not logged in...";
-
+            Response.Cookies.Append("Spotify", UserToken.AccessToken);
 
             return RedirectToAction("Index", UserToken);
         }
@@ -245,10 +253,44 @@ namespace CodeLouSpotify.Controllers
 
             return View(userProfile);
         }
-
-        public IActionResult AnalyisTrack(string id)
+        public async Task<AudioAnalysis> GetTrackAnalysis(string id, string userToken)
         {
-            return View();
+            var analyizedTrack = new AudioAnalysis();
+            using(HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
+                var task = await client.GetAsync($@" https://api.spotify.com/v1/audio-analysis/{id}");
+                try
+                {
+                    if(task.IsSuccessStatusCode)
+                    {
+                        var json = await task.Content.ReadAsStringAsync();
+                        analyizedTrack = JsonConvert.DeserializeObject<AudioAnalysis>(json);
+                        return analyizedTrack;
+                    }
+                    else
+                    {
+                        return new AudioAnalysis();
+                    }
+
+                }catch(Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return new AudioAnalysis();
+                }
+
+            }
+        }
+        public IActionResult AnalyzeTrack(Item2 track)
+        {
+            Debug.WriteLine(track.id);
+            var id = track.id;
+            var user = Request.Cookies["Spotify"];
+            TrackAudioAnalysis = GetTrackAnalysis(id, user).Result;
+
+            return View(TrackAudioAnalysis);
         }
 
     }

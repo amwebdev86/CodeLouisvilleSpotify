@@ -418,3 +418,4 @@ C:\Users\AMweb\source\repos\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\
 C:\Users\AMweb\source\repos\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\obj\Debug\netcoreapp3.1\CodeLouSpotify.dll
 C:\Users\AMweb\source\repos\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\obj\Debug\netcoreapp3.1\CodeLouSpotify.pdb
 C:\Users\AMweb\source\repos\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\obj\Debug\netcoreapp3.1\CodeLouSpotify.genruntimeconfig.cache
+C:\Users\AMweb\source\repos\amwebdev86\CodeLouisvilleSpotify\CodeLouSpotify\CodeLouSpotify\obj\Debug\netcoreapp3.1\Razor\Views\Home\AnalyzeTrack.cshtml.g.cs
