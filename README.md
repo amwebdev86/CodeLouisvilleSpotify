@@ -7,7 +7,8 @@ This project demostrates consuming Spotify web API. It displays Song information
 1. Download the zip file or fork the project
 2. unzip the files and open the CodeLouisvilleSpotify folder 
 3. Double click the .sln file called 'CodeLouSpotify'
-4. run the application.
+4. You will need to use LocalHost port 44363 for access.
+5. run the application.
 
 NOTE: If you recieve and issue with authenticating I may need to whitelist your URL.
 ## Authorization Methods
