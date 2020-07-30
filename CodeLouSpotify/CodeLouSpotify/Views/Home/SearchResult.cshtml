@@ -18,6 +18,8 @@
                     <dd>
                         <img src="@Model.items[i].album.images[j].url" height="@Model.items[i].album.images[j].height" width="@Model.items[i].album.images[j].width" />
                         <a href="@Model.items[i].preview_url">Preview</a>
+                        @Html.ActionLink("Analyize", "AnalyzeTrack",new Item2 { id = Model.items[i].id  });
+
 
                     </dd>
 
