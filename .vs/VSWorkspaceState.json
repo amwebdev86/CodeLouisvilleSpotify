@@ -3,7 +3,11 @@
     "",
     "\\CodeLouSpotify",
     "\\CodeLouSpotify\\CodeLouSpotify",
-    "\\CodeLouSpotify\\CodeLouSpotify\\Data"
+    "\\CodeLouSpotify\\CodeLouSpotify\\Controllers",
+    "\\CodeLouSpotify\\CodeLouSpotify\\Data",
+    "\\CodeLouSpotify\\CodeLouSpotify\\Views",
+    "\\CodeLouSpotify\\CodeLouSpotify\\Views\\Home"
   ],
+  "SelectedNode": "\\CodeLouSpotify\\CodeLouSpotify\\Controllers\\HomeController.cs",
   "PreviewInSolutionExplorer": false
 }
