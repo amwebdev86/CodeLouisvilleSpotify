@@ -1,0 +1,28 @@
+﻿@model CodeLouSpotify.Models.AudioAnalysis
+
+@{
+    ViewData["Title"] = "AnalyzeTrack";
+}
+
+<h1>AnalyzeTrack</h1>
+
+<div>
+    <h4>AudioAnalysis</h4>
+    <h3>Duration of song</h3>
+    <p class="text-black-50">@Model.Track.ToString()</p>
+    <hr />
+    <h1>Bar Lengths</h1>
+    <dl class="list-group">
+        @{
+            for (int i = 0; i < Model.bars.Length; i++)
+            {
+                //TODO: Improve UI
+                var count = i +1;
+                <dt class="list-group-item">Bar @count</dt>
+                <dd class="list-group-item">@Model.bars[i].Duration seconds</dd>
+            }
+        }
+
+    </dl>
+</div>
+

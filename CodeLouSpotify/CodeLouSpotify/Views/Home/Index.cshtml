@@ -1,8 +1,21 @@
-﻿@{
+﻿@model CodeLouSpotify.Models.SpotifyToken
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4 text-success">Spotify DB</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core"><button>Authenticate</button></a>.</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4 text-success">Spotify DB</h1>
+        @if (Model.AccessToken == null )
+        {
+            @Html.ActionLink("Get Authenticated!", "AuthorizeUser")
+
+        }
+        else
+        {
+            <p>You are currently logged in...</p>
+            @Html.ActionLink("View Profile","Profile")
+        }
+
+    </div>
+
+
