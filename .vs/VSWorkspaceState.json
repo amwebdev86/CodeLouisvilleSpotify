@@ -1,13 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\CodeLouSpotify",
     "\\CodeLouSpotify\\CodeLouSpotify",
     "\\CodeLouSpotify\\CodeLouSpotify\\Controllers",
     "\\CodeLouSpotify\\CodeLouSpotify\\Data",
     "\\CodeLouSpotify\\CodeLouSpotify\\Views",
     "\\CodeLouSpotify\\CodeLouSpotify\\Views\\Home"
   ],
-  "SelectedNode": "\\README.md",
   "PreviewInSolutionExplorer": false
 }
