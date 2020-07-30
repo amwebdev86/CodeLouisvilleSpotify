@@ -18,3 +18,7 @@ NOTE: If you recieve and issue with authenticating I may need to whitelist your 
 - Create a class, then create at least one object of that class and populate it with data
 - Create a dictionary or list, populate it with several values, retrieve at least one value, and use it in your program
 - Connect to an external/3rd party API and read data into your app
+## Upcoming
+- Artist Search
+- Graphs displaying AudioAnalysis data
+- Edit playlists
