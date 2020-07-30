@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace CodeLouSpotify.Models
 {
-   
+
     public class AudioAnalysis
     {
         public Bar[] bars { get; set; }
@@ -13,12 +11,12 @@ namespace CodeLouSpotify.Models
         public Section[] sections { get; set; }
         public Segment[] segments { get; set; }
         public Tatum[] tatums { get; set; }
-        public Track track { get; set; }
+        public Track Track { get; set; }
     }
 
     public class Track
     {
-        public float duration { get; set; }
+        public float Duration { get; set; }
         public string sample_md5 { get; set; }
         public float offset_seconds { get; set; }
         public float window_seconds { get; set; }
@@ -43,13 +41,20 @@ namespace CodeLouSpotify.Models
         public float synch_version { get; set; }
         public string rhythmstring { get; set; }
         public float rhythm_version { get; set; }
+
+        
+
+        public override string ToString()
+        {
+            return $"The Song is {Duration} seconds long.";
+        }
     }
 
     public class Bar
     {
-        public float start { get; set; }
-        public float duration { get; set; }
-        public float confidence { get; set; }
+        public float Start { get; set; }
+        public float Duration { get; set; }
+        public float Confidence { get; set; }
     }
 
     public class Beat
