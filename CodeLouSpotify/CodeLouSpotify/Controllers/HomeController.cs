@@ -78,7 +78,7 @@ namespace CodeLouSpotify.Controllers
             //Take Access Token from new SpotifyToken and store it in a cookie for future reference.
             Response.Cookies.Append("Spotify", SpotifyToken.AccessToken);
 
-            return RedirectToAction("Index", SpotifyToken);
+            return RedirectToAction("Index");
         }
         #endregion
         #region  After Authorized Pages
