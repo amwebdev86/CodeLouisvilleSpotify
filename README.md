@@ -1,5 +1,8 @@
 # CodeLouisvilleSpotify
-Code Louisville Project. Currently under developement not all features are implemented.
+Search for a song and retrieve album information using the spotify API.
+
+I created this app using ASP.NET MVC model to seperate areas of concern. I wanted to avoid importing a library for purposes of learning which lead a few key decisions when coding.
+The first was creating an object to store the required Authentication information required to access the api . With this data created I decided to pass the information via Cookie storage to persist the data and pass it to other contorller views.
 
 ## Purpose
 This project demostrates consuming Spotify web API. It displays Song information based on the user's query. 
