@@ -89,7 +89,7 @@ The HomeController also refreshes the token if needed:
 ```
 ## Key decicisons include:
 - Using HTTPClient to make aysnc GET request and deserialize JSON returned into models. 
-(CODE)[https://github.com/amwebdev86/CodeLouisvilleSpotify/blob/b47a7ca35d33c645937fccebf7b7d0d16c8e21be/CodeLouSpotify/CodeLouSpotify/Controllers/HomeController.cs#L217]
+[CODE](https://github.com/amwebdev86/CodeLouisvilleSpotify/blob/b47a7ca35d33c645937fccebf7b7d0d16c8e21be/CodeLouSpotify/CodeLouSpotify/Controllers/HomeController.cs#L217)
 ```C#
   public async Task<Tracks> GetSearchResults(string title, string limit, string userToken)
         {
@@ -112,7 +112,7 @@ The HomeController also refreshes the token if needed:
         }
 ```
 -using CookieStorage
-- Created Models to digest the returned json ex: (SearchResult model)[https://github.com/amwebdev86/CodeLouisvilleSpotify/blob/FinalizeBranch/CodeLouSpotify/CodeLouSpotify/Models/SearchResultModel.cs]
+- Created Models to digest the returned json ex: [SearchResult model](https://github.com/amwebdev86/CodeLouisvilleSpotify/blob/FinalizeBranch/CodeLouSpotify/CodeLouSpotify/Models/SearchResultModel.cs)
 
 
 ### Thoughts
@@ -127,11 +127,29 @@ I have a long HomeController and can probably seperate areas of concern and make
 3. Double click the .sln file called 'CodeLouSpotify'
 4. You will need to use LocalHost port 44363 for access.
 5. run the application.
-If the application will not run it may need a ClientID and Secret since it has been reset for security purposes you can provide this information in the (SpotifyUser Class)[https://github.com/amwebdev86/CodeLouisvilleSpotify/blob/master/CodeLouSpotify/CodeLouSpotify/Data/SpotifyUser.cs] you can also alter the (HomeController)[]
+If the application will not run it may need a ClientID and Secret since it has been reset for security purposes you can provide this information in the [HomeController](https://github.com/amwebdev86/CodeLouisvilleSpotify/blob/FinalizeBranch/CodeLouSpotify/CodeLouSpotify/Controllers/HomeController.cs) call to instantiate a new SpotifyUser for example:
+```C#
+  [HttpGet]
+        public IActionResult Index()
+        {
+            //Will be null upon initial entry. once Authenticate is clicked cookie will store the AccessToken.
+            var spotifyToken = new SpotifyToken('clientId', 'clientSecret');
+            if (string.IsNullOrEmpty(spotifyToken.AccessToken))
+            {
+                if (Request.Cookies.ContainsKey("Spotify"))
+                {
+                    spotifyToken.AccessToken = Request.Cookies["Spotify"];
+                }
+            }
+
+
+            return View(spotifyToken);
+        }
+```
 
 
 ## Project outlined requirements (Code Louisville)
-This project was created for Code Louisville C# track and the following outlines the min.Requirements for the project. Full requirements can be viewed (here)[https://docs.google.com/document/d/1sFJskj06VFKwinZg-8822R6O-PRlMF60AGTVGagslJw/edit]
+This project was created for Code Louisville C# track and the following outlines the min.Requirements for the project. Full requirements can be viewed [HERE](https://docs.google.com/document/d/1sFJskj06VFKwinZg-8822R6O-PRlMF60AGTVGagslJw/edit)
 ## Min. Requirements met
 - Create a class, then create at least one object of that class and populate it with data
 - Create a dictionary or list, populate it with several values, retrieve at least one value, and use it in your program
