@@ -97,7 +97,7 @@ namespace CodeLouSpotify.Controllers
         /// <returns>SpotifyToken</returns>
         public SpotifyToken GetSpotifyToken(string code)
         {
-            SpotifyToken = new SpotifyToken(); //debug testing
+            SpotifyToken = new SpotifyToken(); 
             SpotifyToken newToken = new SpotifyToken();
             string responseString = string.Empty;
 
@@ -124,12 +124,12 @@ namespace CodeLouSpotify.Controllers
                 }
 
             }
-            //Debug testing.
-            SpotifyToken.AccessToken = newToken.AccessToken;
+            
+           SpotifyToken.AccessToken = newToken.AccessToken;
             SpotifyToken.Expiration = newToken.Expiration;
             SpotifyToken.RefreshToken = newToken.RefreshToken;
-            SpotifyToken.Scope = newToken.Scope;
-            SpotifyToken.TokenType = newToken.TokenType;
+           SpotifyToken.Scope = newToken.Scope;
+           SpotifyToken.TokenType = newToken.TokenType;
             return SpotifyToken;
         }
 
@@ -251,11 +251,7 @@ namespace CodeLouSpotify.Controllers
 
         public async Task<IActionResult> Profile()
         {
-            //ViewData["UserToken"] = userToken.AccessToken;
-            //if (string.IsNullOrEmpty(userToken.AccessToken))
-            //{
-            //    return RedirectToAction("Index");
-            //}
+         
             var spotifyToken = new SpotifyToken();
             if (Request.Cookies.ContainsKey("Spotify"))
             {
@@ -318,7 +314,7 @@ namespace CodeLouSpotify.Controllers
         }
         public IActionResult AnalyzeTrack(Item2 track)
         {
-            Debug.WriteLine(track.id);
+           
             var id = track.id;
             var user = Request.Cookies["Spotify"];
             TrackAudioAnalysis = GetTrackAnalysis(id, user).Result;
